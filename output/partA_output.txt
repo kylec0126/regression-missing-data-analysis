@@ -1,0 +1,140 @@
+
+> # =============================================================
+> # AMS 315 - Project 1, Part A
+> # Merge IV + DV files by subject ID, count missing .... [TRUNCATED] 
+
+> set.seed(315)   # makes the imputation reproducible
+
+> # ---- 1. Read the two files ----------------------------------
+> iv <- read.csv("data/partA_IV.csv", header = TRUE)
+
+> dv <- read.csv("data/partA_DV.csv", header = TRUE)
+
+> str(iv); str(dv)
+'data.frame':	569 obs. of  2 variables:
+ $ ID: int  440 467 313 446 44 374 201 258 525 45 ...
+ $ IV: num  4.63 5.24 4.29 4.77 5.57 ...
+'data.frame':	569 obs. of  2 variables:
+ $ ID: int  332 368 164 230 347 323 313 287 269 547 ...
+ $ DV: num  58.3 47.6 NA 59 58.3 ...
+
+> # ---- 2. Sort by ID and merge (NOT cut-and-paste) ------------
+> # all = TRUE is a FULL outer join: keeps an ID even if it only
+> # appears in one  .... [TRUNCATED] 
+
+> dv <- dv[order(dv$ID), ]
+
+> partA <- merge(iv, dv, by = "ID", all = TRUE)
+
+> str(partA)
+'data.frame':	569 obs. of  3 variables:
+ $ ID: int  1 2 3 4 5 6 7 8 9 10 ...
+ $ IV: num  3.37 3.93 6.3 5.71 5.48 ...
+ $ DV: num  48.5 54 61.3 58.6 NA ...
+
+> write.csv(partA, "data/partA_merged.csv", row.names = FALSE)
+
+> # ---- 3. Counts the report asks for --------------------------
+> n_total   <- nrow(partA)
+
+> has_iv    <- !is.na(partA$IV)
+
+> has_dv    <- !is.na(partA$DV)
+
+> counts <- data.frame(
++   Quantity = c("Total subject IDs",
++                "IDs with an IV value",
++                "IDs with a DV value",
++       .... [TRUNCATED] 
+
+> print(counts)
+                           Quantity    Value
+1                 Total subject IDs 569.0000
+2              IDs with an IV value 500.0000
+3               IDs with a DV value 520.0000
+4           IDs with both IV and DV 454.0000
+5 IDs with at least one of IV or DV 566.0000
+6                  IDs missing both   3.0000
+7            Fraction of IV missing   0.1213
+8            Fraction of DV missing   0.0861
+
+> md.pattern(partA)   # visual missing-data pattern (good for the appendix)
+    ID DV IV    
+454  1  1  1   0
+66   1  1  0   1
+46   1  0  1   1
+3    1  0  0   2
+     0 49 69 118
+
+> # ---- 4. Drop rows with NO information, then impute ----------
+> partA_imp <- partA[has_iv | has_dv, ]
+
+> # norm.boot = linear regression imputation with bootstrap.
+> # Other allowed choices: "pmm" (predictive mean matching), "norm".
+> # NOT allowed: mea .... [TRUNCATED] 
+
+> partA_complete <- cbind(ID = partA_imp$ID, complete(imp))
+
+> md.pattern(partA_complete)   # should say "completely observed"
+ /\     /\
+{  `---'  }
+{  O   O  }
+==>  V <==  No need for mice. This data set is completely observed.
+ \  \|/  /
+  `-----'
+
+    ID IV DV  
+566  1  1  1 0
+     0  0  0 0
+
+> write.csv(partA_complete, "data/partA_imputed.csv", row.names = FALSE)
+
+> # ---- 5. Regression on the completed data --------------------
+> M <- lm(DV ~ IV, data = partA_complete)
+
+> summary(M)
+
+Call:
+lm(formula = DV ~ IV, data = partA_complete)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.5837  -1.8232   0.0143   2.0059   8.6393 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  30.6175     0.6607   46.34   <2e-16 ***
+IV            4.8703     0.1288   37.80   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.019 on 564 degrees of freedom
+Multiple R-squared:  0.717,	Adjusted R-squared:  0.7165 
+F-statistic:  1429 on 1 and 564 DF,  p-value: < 2.2e-16
+
+
+> anova(M)
+Analysis of Variance Table
+
+Response: DV
+           Df  Sum Sq Mean Sq F value    Pr(>F)    
+IV          1 13020.3 13020.3  1428.9 < 2.2e-16 ***
+Residuals 564  5139.4     9.1                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+> confint(M, level = 0.95)
+                2.5 %    97.5 %
+(Intercept) 29.319672 31.915294
+IV           4.617253  5.123397
+
+> png("figures/partA_scatter.png", width = 700, height = 500)
+
+> plot(DV ~ IV, data = partA_complete, pch = 20,
++      main = "Figure 1: DV vs IV (after imputation)")
+
+> abline(M, col = "red", lwd = 2)
+
+> dev.off()
+RStudioGD 
+        2 
