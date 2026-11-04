@@ -169,3 +169,63 @@ Residuals    472 0.0130575 0.0000277
  Pure Error  455 0.0126226 0.0000277                   
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+package ‘xfun’ successfully unpacked and SHA256 sums checked
+package ‘knitr’ successfully unpacked and SHA256 sums checked
+
+The downloaded binary packages are in
+	/var/folders/ng/nw_6sbks6fs381wmkrzvmbbw0000gn/T//RtmpDtrFVN/downloaded_packages
+package ‘knitr’ successfully unpacked and SHA256 sums checked
+
+The downloaded binary packages are in
+	/var/folders/ng/nw_6sbks6fs381wmkrzvmbbw0000gn/T//RtmpDtrFVN/downloaded_packages
+
+
+Table: Table 1. Subject ID counts
+
+|Quantity                          |    Value|
+|:---------------------------------|--------:|
+|Total subject IDs                 | 569.0000|
+|IDs with an IV value              | 500.0000|
+|IDs with a DV value               | 520.0000|
+|IDs with both IV and DV           | 454.0000|
+|IDs with at least one of IV or DV | 566.0000|
+|IDs missing both                  |   3.0000|
+|Fraction of IV missing            |   0.1213|
+|Fraction of DV missing            |   0.0861|
+
+
+Table: Table 2. ANOVA, Part A
+
+|          |  Df|   Sum Sq|  Mean Sq| F value| Pr(>F)|
+|:---------|---:|--------:|--------:|-------:|------:|
+|IV        |   1| 13020.35| 13020.35| 1428.86|      0|
+|Residuals | 564|  5139.38|     9.11|      NA|     NA|
+
+
+Table: Table 3. R-squared by transformation
+
+|        |      y| log(y)|    1/y| sqrt(y)| 1/sqrt(y)|
+|:-------|------:|------:|------:|-------:|---------:|
+|x       | 0.5610| 0.6330| 0.6602|  0.6026|    0.6520|
+|log(x)  | 0.5626| 0.6260| 0.6434|  0.6002|    0.6401|
+|1/x     | 0.5547| 0.6087| 0.6167|  0.5877|    0.6180|
+|sqrt(x) | 0.5630| 0.6308| 0.6530|  0.6026|    0.6473|
+|x^2     | 0.5505| 0.6302| 0.6668|  0.5956|    0.6538|
+
+
+Table: Table 4. ANOVA, Part B
+
+|          |  Df|   Sum Sq|  Mean Sq| F value| Pr(>F)|
+|:---------|---:|--------:|--------:|-------:|------:|
+|xt        |   1| 23917.69| 23917.69|  916.98|      0|
+|Residuals | 472| 12311.22|    26.08|      NA|     NA|
+Analysis of Variance Table
+
+Response: yt
+              Df  Sum Sq Mean Sq  F value Pr(>F)    
+x_bin          1 23845.6 23845.6 919.9754 <2e-16 ***
+Residuals    472 12383.3    26.2                    
+ Lack of fit  17   589.8    34.7   1.3385 0.1639    
+ Pure Error  455 11793.5    25.9                    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
